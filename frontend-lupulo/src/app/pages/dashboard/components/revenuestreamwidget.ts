@@ -1,108 +1,94 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ChartModule } from 'primeng/chart';
 import { debounceTime, Subscription } from 'rxjs';
 import { LayoutService } from '../../../layout/service/layout.service';
+import { DashboardService } from '../../../services/dashboard.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
     standalone: true,
     selector: 'app-revenue-stream-widget',
-    imports: [ChartModule],
+    imports: [ChartModule, CommonModule],
     template: `<div class="card !mb-8">
-        <div class="font-semibold text-xl mb-4">Revenue Stream</div>
+        <div class="font-semibold text-xl mb-4">Ventas por Semana</div>
         <p-chart type="bar" [data]="chartData" [options]="chartOptions" class="h-80" />
     </div>`
 })
-export class RevenueStreamWidget {
+export class RevenueStreamWidget implements OnInit, OnDestroy {
     chartData: any;
-
     chartOptions: any;
-
     subscription!: Subscription;
 
-    constructor(public layoutService: LayoutService) {
-        this.subscription = this.layoutService.configUpdate$.pipe(debounceTime(25)).subscribe(() => {
-            this.initChart();
-        });
-    }
+    constructor(
+        public layoutService: LayoutService,
+        private dashboardService: DashboardService
+    ) {}
 
     ngOnInit() {
-        this.initChart();
+        this.subscription = this.layoutService.configUpdate$.pipe(debounceTime(25)).subscribe(() => this.cargarDatos());
+
+        this.cargarDatos();
     }
 
-    initChart() {
+    cargarDatos() {
         const documentStyle = getComputedStyle(document.documentElement);
         const textColor = documentStyle.getPropertyValue('--text-color');
         const borderColor = documentStyle.getPropertyValue('--surface-border');
         const textMutedColor = documentStyle.getPropertyValue('--text-color-secondary');
 
-        this.chartData = {
-            labels: ['Q1', 'Q2', 'Q3', 'Q4'],
-            datasets: [
-                {
-                    type: 'bar',
-                    label: 'Subscriptions',
-                    backgroundColor: documentStyle.getPropertyValue('--p-primary-400'),
-                    data: [4000, 10000, 15000, 4000],
-                    barThickness: 32
-                },
-                {
-                    type: 'bar',
-                    label: 'Advertising',
-                    backgroundColor: documentStyle.getPropertyValue('--p-primary-300'),
-                    data: [2100, 8400, 2400, 7500],
-                    barThickness: 32
-                },
-                {
-                    type: 'bar',
-                    label: 'Affiliate',
-                    backgroundColor: documentStyle.getPropertyValue('--p-primary-200'),
-                    data: [4100, 5200, 3400, 7400],
-                    borderRadius: {
-                        topLeft: 8,
-                        topRight: 8,
-                        bottomLeft: 0,
-                        bottomRight: 0
-                    },
-                    borderSkipped: false,
-                    barThickness: 32
-                }
-            ]
-        };
+        this.dashboardService.getWeeklySales().subscribe({
+            next: (data) => {
+                console.log('📊 Datos recibidos del backend:', data);
 
-        this.chartOptions = {
-            maintainAspectRatio: false,
-            aspectRatio: 0.8,
-            plugins: {
-                legend: {
-                    labels: {
-                        color: textColor
+                const labels = Object.keys(data);
+                const values = Object.values(data);
+
+                this.chartData = {
+                    labels,
+                    datasets: [
+                        {
+                            label: 'Total ventas',
+                            data: values,
+                            backgroundColor: documentStyle.getPropertyValue('--p-primary-400'),
+                            barThickness: 30,
+                            borderRadius: 4
+                        }
+                    ]
+                };
+
+                this.chartOptions = {
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: textColor
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: textMutedColor
+                            },
+                            grid: {
+                                color: 'transparent'
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                color: textMutedColor
+                            },
+                            grid: {
+                                color: borderColor
+                            }
+                        }
                     }
-                }
+                };
             },
-            scales: {
-                x: {
-                    stacked: true,
-                    ticks: {
-                        color: textMutedColor
-                    },
-                    grid: {
-                        color: 'transparent',
-                        borderColor: 'transparent'
-                    }
-                },
-                y: {
-                    stacked: true,
-                    ticks: {
-                        color: textMutedColor
-                    },
-                    grid: {
-                        color: borderColor,
-                        borderColor: 'transparent',
-                        drawTicks: false
-                    }
-                }
+            error: (err) => {
+                console.error('❌ Error al cargar las ventas semanales:', err);
             }
-        };
+        });
     }
 
     ngOnDestroy() {

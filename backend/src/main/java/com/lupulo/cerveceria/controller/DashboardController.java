@@ -101,4 +101,8 @@ public class DashboardController {
     return cervezaService.getLowStockList(threshold);
   }
 
+  @GetMapping("/weekly-sales")
+  public Map<String, Double> getWeeklySales() {
+    return ventaService.obtenerVentasPorSemana();
+  }
 }

@@ -8,8 +8,12 @@ import com.lupulo.cerveceria.repository.VentaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class VentaService {
@@ -63,5 +67,15 @@ public class VentaService {
     return ventaRepository.findAll().stream()
         .mapToDouble(v -> v.getCerveza().getPrecio() * v.getCantidad())
         .sum();
+  }
+
+  public Map<String, Double> obtenerVentasPorSemana() {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-'W'ww");
+
+    return listarTodas().stream()
+        .filter(v -> v.getFecha() != null)
+        .collect(Collectors.groupingBy(
+            v -> v.getFecha().toLocalDate().format(formatter),
+            Collectors.summingDouble(v -> v.getCerveza().getPrecio() * v.getCantidad())));
   }
 }

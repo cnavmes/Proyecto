@@ -150,4 +150,7 @@ export class DashboardService {
         const params = new HttpParams().set('threshold', threshold.toString());
         return this.http.get<Cerveza[]>(`${this.apiDashboard}/low-stock`, { params });
     }
+    getWeeklySales(): Observable<{ [semana: string]: number }> {
+        return this.http.get<{ [semana: string]: number }>('/api/dashboard/weekly-sales');
+    }
 }

@@ -100,4 +100,5 @@ public class DashboardController {
   public List<Cerveza> lowStockList(@RequestParam int threshold) {
     return cervezaService.getLowStockList(threshold);
   }
+
 }

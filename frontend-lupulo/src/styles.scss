@@ -1,0 +1,10 @@
+/* You can add global styles to this file, and also import other style files */
+@use './tailwind.css';
+@use './assets/layout/layout.scss';
+@use 'primeicons/primeicons.css';
+@use './assets/demo/demo.scss';
+
+html.dark body, html.app-dark body {
+  background-color: var(--surface-900) !important;
+  color: var(--surface-0) !important;
+}

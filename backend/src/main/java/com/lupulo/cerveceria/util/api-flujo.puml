@@ -1,0 +1,28 @@
+@startuml flujo
+start
+
+:Usuario accede a la app;
+
+if (¿Está autenticado?) then (Sí)
+  :Obtener token JWT;
+
+  if (¿Rol ADMIN?) then (Sí)
+    :Registrar ventas;
+    :Reponer stock;
+    :Listar y filtrar ventas;
+    :Listar y filtrar movimientos;
+    :Exportar cervezas, ventas y movimientos a CSV;
+    :Crear, editar y eliminar cervezas;
+  else (Rol USER)
+    :Registrar ventas;
+    :Listar cervezas;
+    :Ver movimientos personales;
+  endif
+
+else (No)
+  :Ver catálogo público de cervezas;
+  :Filtrar por nombre o estilo;
+endif
+
+stop
+@enduml

@@ -1,0 +1,36 @@
+@startuml usos
+left to right direction
+
+actor Visitante as V
+actor User as U
+actor Admin as A
+
+package "API Cervecería" {
+  usecase "Ver catálogo de cervezas" as UC1
+  usecase "Filtrar cervezas por nombre/estilo" as UC2
+  usecase "Iniciar sesión / registrarse" as UC3
+  usecase "Registrar venta" as UC4
+  usecase "Listar ventas propias" as UC5
+  usecase "Reponer stock" as UC6
+  usecase "Listar movimientos de stock" as UC7
+  usecase "Exportar datos a CSV" as UC8
+  usecase "Gestionar cervezas (CRUD)" as UC9
+}
+
+V --> UC1
+V --> UC2
+V --> UC3
+
+U --> UC1
+U --> UC2
+U --> UC4
+U --> UC5
+
+A --> UC4
+A --> UC5
+A --> UC6
+A --> UC7
+A --> UC8
+A --> UC9
+
+@enduml

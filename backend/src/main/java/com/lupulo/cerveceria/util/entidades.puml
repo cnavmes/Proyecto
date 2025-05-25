@@ -1,0 +1,58 @@
+@startuml erd-cerveceria
+hide circle
+skinparam linetype ortho
+
+entity Cerveza {
+  * id : Long <<PK>>
+  --
+  nombre : String
+  estilo : String
+  graduacion : double
+  paisOrigen : String
+  precio : double
+  stock : int
+  descripcion : String
+  imagenUrl : String
+  codigoBarras : String <<unique>>
+}
+
+entity MovimientoStock {
+  * id : Long <<PK>>
+  --
+  cantidad : int
+  tipo : String
+  fecha : LocalDateTime
+  usuarioEmail : String
+  --
+  cerveza_id : Long <<FK>>
+}
+
+entity Venta {
+  * id : Long <<PK>>
+  --
+  cantidad : int
+  fecha : LocalDateTime
+  usuarioEmail : String
+  --
+  cerveza_id : Long <<FK>>
+}
+
+entity Usuario {
+  * id : Long <<PK>>
+  --
+  email : String <<unique>>
+  password : String
+  rol : Rol
+}
+
+enum Rol {
+  USER
+  ADMIN
+}
+
+' Relaciones
+Cerveza ||--o{ MovimientoStock : genera
+Cerveza ||--o{ Venta : participa
+
+Usuario ||.. Rol : tiene
+@enduml

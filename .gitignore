@@ -1,0 +1,26 @@
+# === Angular frontend ===
+frontend-lupulo/node_modules/
+frontend-lupulo/dist/
+frontend-lupulo/.angular/cache/
+frontend-lupulo/.angular/config.json
+frontend-lupulo/.env
+
+# === Spring Boot backend ===
+backend/target/
+backend/.classpath
+backend/.project
+backend/.settings/
+backend/*.iml
+
+# === IDEs ===
+.vscode/
+.idea/
+*.iml
+
+# === OS ===
+.DS_Store
+Thumbs.db
+
+# === Logs and env ===
+*.log
+*.env

@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -77,5 +78,21 @@ public class VentaService {
         .collect(Collectors.groupingBy(
             v -> v.getFecha().toLocalDate().format(formatter),
             Collectors.summingDouble(v -> v.getCerveza().getPrecio() * v.getCantidad())));
+  }
+
+  public List<Map<String, Object>> obtenerVentasPorEstilo() {
+    return ventaRepository.findAll().stream()
+        .collect(Collectors.groupingBy(
+            v -> v.getCerveza().getEstilo(),
+            Collectors.summingInt(Venta::getCantidad)))
+        .entrySet()
+        .stream()
+        .map(entry -> {
+          Map<String, Object> map = new HashMap<>();
+          map.put("estilo", entry.getKey());
+          map.put("cantidad", entry.getValue());
+          return map;
+        })
+        .toList();
   }
 }

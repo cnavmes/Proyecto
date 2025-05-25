@@ -105,4 +105,9 @@ public class DashboardController {
   public Map<String, Double> getWeeklySales() {
     return ventaService.obtenerVentasPorSemana();
   }
+
+  @GetMapping("/ventas-por-estilo")
+  public List<Map<String, Object>> ventasPorEstilo() {
+    return ventaService.obtenerVentasPorEstilo();
+  }
 }

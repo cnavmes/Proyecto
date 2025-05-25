@@ -2,10 +2,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
 export interface RevenueDTO {
     nombreCerveza: string;
     importe: number;
+}
+export interface EstiloVentasDTO {
+    estilo: string;
+    cantidad: number;
 }
 
 export interface Usuario {
@@ -152,5 +155,8 @@ export class DashboardService {
     }
     getWeeklySales(): Observable<{ [semana: string]: number }> {
         return this.http.get<{ [semana: string]: number }>('/api/dashboard/weekly-sales');
+    }
+    getVentasPorEstilo(): Observable<EstiloVentasDTO[]> {
+        return this.http.get<EstiloVentasDTO[]>(`${this.apiDashboard}/ventas-por-estilo`);
     }
 }

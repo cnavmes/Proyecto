@@ -7,6 +7,7 @@ import { RevenueStreamWidget } from './components/revenuestreamwidget';
 import { NotificationsWidget } from './components/notificationswidget';
 import { DashboardService, Cerveza } from '../../services/dashboard.service'; // ②
 import { DialogModule } from 'primeng/dialog';
+import { TopStylesChartWidget } from './components/topstyleschartwidget';
 
 @Component({
     standalone: true,
@@ -18,6 +19,7 @@ import { DialogModule } from 'primeng/dialog';
         BestSellingWidget,
         RevenueStreamWidget,
         NotificationsWidget,
+        TopStylesChartWidget, // ③
         DialogModule
     ],
     template: `
@@ -40,7 +42,8 @@ import { DialogModule } from 'primeng/dialog';
 
             <div class="col-span-12 xl:col-span-6">
                 <app-revenue-stream-widget />
-                <app-notifications-widget />
+
+                <app-top-styles-chart-widget />
             </div>
         </div>
     `

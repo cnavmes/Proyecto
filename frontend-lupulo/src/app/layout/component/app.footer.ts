@@ -4,8 +4,7 @@ import { Component } from '@angular/core';
     standalone: true,
     selector: 'app-footer',
     template: `<div class="layout-footer">
-        
         <a href="" target="_blank" rel="noopener noreferrer" class="text-primary font-bold hover:underline"></a>
     </div>`
 })
-export class AppFooter { }
+export class AppFooter {}

@@ -9,5 +9,5 @@ import com.lupulo.cerveceria.model.Rol;
 public class RegisterRequest {
   private String email;
   private String password;
-  private Rol rol; // ADMIN o USER
+  private Rol rol;
 }

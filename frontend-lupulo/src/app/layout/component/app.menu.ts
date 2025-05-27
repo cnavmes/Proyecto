@@ -27,6 +27,11 @@ export class AppMenu {
                         label: 'Inventario',
                         icon: 'pi pi-fw pi-box',
                         routerLink: ['/admin/inventario']
+                    },
+                    {
+                        label: 'Entrada de stock',
+                        icon: 'pi pi-fw pi-plus-circle',
+                        routerLink: ['/admin/entrada-stock']
                     }
                 ]
             }

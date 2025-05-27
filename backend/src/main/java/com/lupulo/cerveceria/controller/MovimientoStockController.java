@@ -17,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/movimientos")
@@ -48,9 +49,10 @@ public class MovimientoStockController {
 
   @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/reponer/{cervezaId}")
-  public ResponseEntity<String> reponer(@PathVariable Long cervezaId, @RequestBody ReponerStockRequest request) {
+  public ResponseEntity<Map<String, String>> reponer(@PathVariable Long cervezaId,
+      @RequestBody ReponerStockRequest request) {
     service.reponerStock(cervezaId, request);
-    return ResponseEntity.ok("Stock repuesto correctamente");
+    return ResponseEntity.ok(Map.of("mensaje", "Stock repuesto correctamente"));
   }
 
   @PreAuthorize("hasRole('ADMIN')")

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
 
 @RestController
-@RequestMapping("/api/auth") // 👈 CAMBIADO AQUÍ
+@RequestMapping("/api/auth")
 @CrossOrigin(origins = "*")
 public class AuthController {
 
@@ -37,11 +37,11 @@ public class AuthController {
   public AuthResponse register(@RequestBody RegisterRequest request) {
     Usuario usuario = Usuario.builder()
         .email(request.getEmail())
-        .password(request.getPassword()) // ✅ Le pasas la contraseña en texto plano
+        .password(request.getPassword()) // Le paso la contraseña en texto plano
         .rol(request.getRol())
         .build();
 
-    usuarioService.registrarUsuario(usuario); // ✅ Aquí se cifra internamente
+    usuarioService.registrarUsuario(usuario); // Aquí se cifra internamente
 
     String jwt = jwtService.generateToken(
         Map.of("rol", usuario.getRol().name()),
@@ -56,7 +56,7 @@ public class AuthController {
       authManager.authenticate(
           new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
     } catch (Exception e) {
-      System.out.println("❌ Error autenticando: " + e.getClass().getSimpleName() + " - " + e.getMessage());
+      System.out.println(" Error autenticando: " + e.getClass().getSimpleName() + " - " + e.getMessage());
       throw e;
     }
 

@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './app/pages/auth/login.component';
+
 import { adminGuard } from './app/guards/admin.guard';
 import { userGuard } from './app/guards/user.guard';
 
@@ -24,8 +25,12 @@ export const routes: Routes = [
             {
                 path: 'inventario',
                 loadComponent: () => import('./app/pages/inventario/catalogo-inventario.component').then((m) => m.CatalogoInventarioComponent)
+            },
+            {
+                path: 'entrada-stock',
+                loadComponent: () => import('./app/pages/entrada-stock/entrada-stock.component').then((m) => m.EntradaStockComponent),
+                canActivate: [adminGuard]
             }
-            // Aquí podrás añadir más páginas de administración en el futuro
         ]
     },
 

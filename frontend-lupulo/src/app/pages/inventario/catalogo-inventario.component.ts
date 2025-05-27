@@ -11,6 +11,8 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DashboardService, Cerveza } from '../../services/dashboard.service';
+import * as XLSX from 'xlsx';
+import * as FileSaver from 'file-saver';
 
 @Component({
     selector: 'app-catalogo-inventario',
@@ -21,6 +23,7 @@ import { DashboardService, Cerveza } from '../../services/dashboard.service';
             <ng-template #start>
                 <p-button label="Nueva" icon="pi pi-plus" severity="secondary" class="mr-2" (onClick)="openNew()" />
                 <p-button label="Eliminar" icon="pi pi-trash" severity="secondary" outlined (onClick)="deleteSelected()" [disabled]="!selectedCervezas?.length" />
+                <p-button label="Exportar" icon="pi pi-file-excel" severity="success" class="ml-2" (onClick)="exportarExcel()" />
             </ng-template>
         </p-toolbar>
 
@@ -46,11 +49,9 @@ import { DashboardService, Cerveza } from '../../services/dashboard.service';
                     <td>{{ cerveza.graduacion }}°</td>
                     <td>{{ cerveza.paisOrigen }}</td>
                     <td>{{ cerveza.precio | currency: 'EUR' }}</td>
-                    <td>
-                        <span class="flex items-center gap-2 justify-end">
-                            <span [ngClass]="{ 'text-red-500 font-semibold': cerveza.stock < 10 }">{{ cerveza.stock }}</span>
-                            <i *ngIf="cerveza.stock < 10" class="pi pi-exclamation-triangle text-red-500" title="Stock bajo"></i>
-                        </span>
+                    <td [ngStyle]="cerveza.stock < 10 ? { color: '#f87171', 'font-weight': '600' } : {}">
+                        {{ cerveza.stock }}
+                        <i *ngIf="cerveza.stock < 10" class="pi pi-exclamation-triangle ml-1 text-red-500" title="Stock bajo"></i>
                     </td>
                     <td>
                         <p-button icon="pi pi-pencil" (click)="editCerveza(cerveza)" class="mr-2" rounded outlined />
@@ -125,6 +126,8 @@ export class CatalogoInventarioComponent implements OnInit {
             message: `¿Seguro que quieres eliminar la cerveza "${c.nombre}"?`,
             header: 'Confirmar',
             icon: 'pi pi-exclamation-triangle',
+            acceptLabel: 'Sí',
+            rejectLabel: 'No',
             accept: () => {
                 this.dashboardService.eliminarCerveza(c.id).subscribe(() => {
                     this.cargarCervezas();
@@ -170,5 +173,24 @@ export class CatalogoInventarioComponent implements OnInit {
 
     hideDialog() {
         this.cervezaDialog = false;
+    }
+    exportarExcel() {
+        const datos = this.cervezas().map((c) => ({
+            Nombre: c.nombre,
+            Estilo: c.estilo,
+            Graduación: c.graduacion,
+            País: c.paisOrigen,
+            Precio: c.precio,
+            Stock: c.stock,
+            Descripción: c.descripcion,
+            CódigoBarras: c.codigoBarras
+        }));
+
+        const worksheet = XLSX.utils.json_to_sheet(datos);
+        const workbook = { Sheets: { Cervezas: worksheet }, SheetNames: ['Cervezas'] };
+        const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+
+        const blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+        FileSaver.saveAs(blob, 'inventario_cervezas.xlsx');
     }
 }

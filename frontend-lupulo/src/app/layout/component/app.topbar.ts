@@ -18,7 +18,7 @@ import { ButtonModule } from 'primeng/button';
         StyleClassModule,
         AppConfigurator,
         OverlayPanelModule, // para <p-overlayPanel>
-        ButtonModule // para pButton
+        ButtonModule
     ],
     template: `
         <div class="layout-topbar">
@@ -34,7 +34,6 @@ import { ButtonModule } from 'primeng/button';
 
             <div class="layout-topbar-actions">
                 <div class="layout-config-menu">
-                    <!-- mantiene el configurador si lo necesitas -->
                     <app-configurator />
                 </div>
 
@@ -44,7 +43,6 @@ import { ButtonModule } from 'primeng/button';
 
                 <div class="layout-topbar-menu hidden lg:block">
                     <div class="layout-topbar-menu-content">
-                        <!-- SOLO el icono de usuario -->
                         <button type="button" class="layout-topbar-action" (click)="op.toggle($event)">
                             <i class="pi pi-user"></i>
                         </button>

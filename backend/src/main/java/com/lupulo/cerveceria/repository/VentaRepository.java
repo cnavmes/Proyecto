@@ -9,6 +9,5 @@ public interface VentaRepository extends JpaRepository<Venta, Long> {
 
   List<Venta> findByFechaBetween(LocalDateTime desde, LocalDateTime hasta);
 
-  // ✅ Añade este método para comprobar si existen ventas de una cerveza
   boolean existsByCervezaId(Long cervezaId);
 }

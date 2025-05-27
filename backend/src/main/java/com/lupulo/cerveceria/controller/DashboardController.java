@@ -30,7 +30,7 @@ public class DashboardController {
   }
 
   /**
-   * Estadísticas resumidas (ya existente)
+   * Estadísticas resumidas
    */
   @GetMapping("/stats")
   public Map<String, Object> stats() {
@@ -47,7 +47,7 @@ public class DashboardController {
   }
 
   /**
-   * 1️⃣ Listado completo de ventas
+   * Listado completo de ventas
    */
   @GetMapping("/orders")
   public List<Venta> getAllOrders() {
@@ -55,7 +55,7 @@ public class DashboardController {
   }
 
   /**
-   * 2️⃣ Detalle de ganancias por cerveza
+   * Detalle de ganancias por cerveza
    */
   @GetMapping("/revenue-details")
   public List<RevenueDTO> getRevenueDetails() {
@@ -67,7 +67,7 @@ public class DashboardController {
   }
 
   /**
-   * 3️⃣ Listado de todos los usuarios
+   * Listado de todos los usuarios
    */
   @GetMapping("/users")
   public List<Usuario> getAllUsers() {
@@ -75,7 +75,7 @@ public class DashboardController {
   }
 
   /**
-   * 4️⃣ Cervezas con stock por debajo de un umbral
+   * Cervezas con stock por debajo de un umbral
    */
   @GetMapping("/low-stock")
   public List<Cerveza> getLowStock(
@@ -88,12 +88,6 @@ public class DashboardController {
   public List<Venta> ordersList() {
     return ventaService.listarTodas();
   }
-
-  /** Lista todos los usuarios */
-  // @GetMapping("/customers-list")
-  // public List<Usuario> customersList() {
-  // return usuarioService.findAllUsers(); // ver nota
-  // }
 
   /** Lista cervezas con stock < threshold */
   @GetMapping("/low-stock-list")

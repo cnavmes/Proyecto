@@ -4,20 +4,36 @@ import { adminGuard } from './app/guards/admin.guard';
 import { userGuard } from './app/guards/user.guard';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent },
+    { path: '', redirectTo: 'login', pathMatch: 'full' },
+    { path: 'login', component: LoginComponent },
 
-  {
-  path: 'admin-panel',
-  loadComponent: () =>
-    import('./app/pages/dashboard/dashboard').then(m => m.Dashboard),
-  canActivate: [adminGuard]
-},
-  {
-  path: 'usuario-panel',
-  loadComponent: () =>
-    import('./app/pages/usuario-panel.component').then((m) => m.UsuarioPanelComponent),
-  canActivate: [userGuard],
-},
-  { path: '**', redirectTo: 'login' }
+    {
+        path: 'admin',
+        loadComponent: () => import('./app/layout/admin-layout.component').then((m) => m.AdminLayoutComponent),
+        canActivate: [adminGuard],
+        children: [
+            {
+                path: '',
+                redirectTo: 'dashboard',
+                pathMatch: 'full'
+            },
+            {
+                path: 'dashboard',
+                loadComponent: () => import('./app/pages/dashboard/dashboard').then((m) => m.Dashboard)
+            },
+            {
+                path: 'inventario',
+                loadComponent: () => import('./app/pages/inventario/catalogo-inventario.component').then((m) => m.CatalogoInventarioComponent)
+            }
+            // Aquí podrás añadir más páginas de administración en el futuro
+        ]
+    },
+
+    {
+        path: 'usuario-panel',
+        loadComponent: () => import('./app/pages/usuario-panel.component').then((m) => m.UsuarioPanelComponent),
+        canActivate: [userGuard]
+    },
+
+    { path: '**', redirectTo: 'login' }
 ];

@@ -3,6 +3,7 @@ import { LoginComponent } from './app/pages/auth/login.component';
 
 import { adminGuard } from './app/guards/admin.guard';
 import { userGuard } from './app/guards/user.guard';
+import { GestionUsuariosComponent } from './app/pages/usuarios/gestion-usuarios.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -34,6 +35,11 @@ export const routes: Routes = [
             {
                 path: 'ventas-multiples',
                 loadComponent: () => import('./app/pages/ventas/ventas-multiples.component').then((m) => m.VentasMultiplesComponent)
+            },
+            {
+                path: 'usuarios',
+                component: GestionUsuariosComponent,
+                canActivate: [adminGuard]
             }
         ]
     },

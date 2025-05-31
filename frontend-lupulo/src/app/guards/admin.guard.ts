@@ -6,12 +6,17 @@ export const adminGuard: CanActivateFn = () => {
     const authService = inject(AuthService);
     const router = inject(Router);
 
-    // Solo permito si hay token y rol'ADMIN'
+    const estaAutenticado = authService.estaAutenticado();
+    const rol = authService.obtenerRol();
+
+    console.log('[GUARD] ¿Autenticado?:', estaAutenticado);
+    console.log('[GUARD] Rol decodificado:', rol);
+
+    // Solo permito si hay token y rol 'ADMIN'
     if (authService.estaAutenticado() && authService.obtenerRol() === 'ADMIN') {
         return true;
     }
 
-    // En cualquier otro caso, vuelvo al login
-    router.navigate(['/login']);
-    return false;
+    // Redirección segura
+    return router.parseUrl('/login');
 };

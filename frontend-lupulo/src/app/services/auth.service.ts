@@ -24,6 +24,13 @@ export class AuthService {
 
     guardarToken(token: string): void {
         localStorage.setItem('token', token);
+        try {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            const rol = payload.rol ?? '';
+            localStorage.setItem('rol', rol); // 🔐 Guardamos el rol directamente
+        } catch (e) {
+            console.error('Error al extraer el rol del token:', e);
+        }
     }
 
     obtenerToken(): string | null {
@@ -41,19 +48,7 @@ export class AuthService {
      * Decodifica el JWT que tienes en localStorage y devuelve el claim 'rol'
      */
     obtenerRol(): string | null {
-        const token = this.obtenerToken();
-        if (!token) {
-            return null;
-        }
-        try {
-            // La parte central del JWT es el payload base64
-            const payload = JSON.parse(atob(token.split('.')[1]));
-            // Asumimos que el backend puso { ..., rol: 'USER' } en los claims
-            return payload.rol ?? null;
-        } catch (e) {
-            console.error('Error decodificando token JWT:', e);
-            return null;
-        }
+        return localStorage.getItem('rol'); // 💡 ya lo guardamos al iniciar sesión
     }
     /**
      * Decodifica el JWT y devuelve el email del usuario (claim 'sub' o 'email')

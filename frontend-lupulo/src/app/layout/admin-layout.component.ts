@@ -3,11 +3,12 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AppTopbar } from './component/app.topbar';
 import { AppMenu } from './component/app.menu';
+import { GestionUsuariosComponent } from '../pages/usuarios/gestion-usuarios.component';
 
 @Component({
     selector: 'app-admin-layout',
     standalone: true,
-    imports: [CommonModule, RouterModule, AppTopbar, AppMenu],
+    imports: [CommonModule, RouterModule, AppTopbar, AppMenu, GestionUsuariosComponent],
     template: `
         <div class="layout-wrapper">
             <!-- Topbar -->

@@ -37,6 +37,11 @@ export class AppMenu {
                         label: 'Ventas',
                         icon: 'pi pi-fw pi-shopping-cart',
                         routerLink: ['/admin/ventas-multiples']
+                    },
+                    {
+                        label: 'Gestión de Usuarios',
+                        icon: 'pi pi-fw pi-users',
+                        routerLink: ['/admin/usuarios']
                     }
                 ]
             }

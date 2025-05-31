@@ -164,7 +164,7 @@ export class DashboardService {
         return this.http.get<EstiloVentasDTO[]>(`${this.apiDashboard}/ventas-por-estilo`);
     }
     // ---------- Ventas múltiples ----------
-    // ---------- Ventas múltiples ----------
+
     registrarVentasMultiples(req: VentaMultipleRequest): Observable<string> {
         return this.http.post(`${this.apiVentas}/multiples`, req, {
             responseType: 'text'

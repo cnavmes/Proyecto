@@ -26,7 +26,7 @@ import { ButtonModule } from 'primeng/button';
                 <button class="layout-menu-button layout-topbar-action" (click)="layoutService.onMenuToggle()">
                     <i class="pi pi-bars"></i>
                 </button>
-                <a class="layout-topbar-logo" routerLink="/">
+                <a class="layout-topbar-logo" routerLink="/admin/dashboard">
                     <img src="/assets/logo.png" alt="Un Mar de Lúpulo" class="h-16 w-auto sm:h-12" />
                     <span>Un Mar de Lúpulo</span>
                 </a>

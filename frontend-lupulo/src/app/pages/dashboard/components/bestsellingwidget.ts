@@ -12,10 +12,6 @@ import { DashboardService, RevenueDTO } from '../../../services/dashboard.servic
         <div class="card">
             <div class="flex justify-between items-center mb-6">
                 <div class="font-semibold text-xl">Productos más vendidos</div>
-                <div>
-                    <button pButton type="button" icon="pi pi-ellipsis-v" class="p-button-rounded p-button-text p-button-plain" (click)="menu.toggle($event)"></button>
-                    <p-menu #menu [popup]="true" [model]="items"></p-menu>
-                </div>
             </div>
             <ul class="list-none p-0 m-0" *ngIf="productos.length">
                 <li *ngFor="let producto of productos" class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
@@ -52,7 +48,17 @@ export class BestSellingWidget implements OnInit {
     cargarDatos(): void {
         this.dashboardService.getRevenueDetails().subscribe({
             next: (datos) => {
-                this.productos = datos.sort((a, b) => b.importe - a.importe);
+                const agrupados = new Map<string, number>();
+
+                for (const item of datos) {
+                    const actual = agrupados.get(item.nombreCerveza) || 0;
+                    agrupados.set(item.nombreCerveza, actual + item.importe);
+                }
+
+                this.productos = Array.from(agrupados.entries())
+                    .map(([nombreCerveza, importe]) => ({ nombreCerveza, importe }))
+                    .sort((a, b) => b.importe - a.importe);
+
                 this.totalIngresos = this.productos.reduce((sum, p) => sum + p.importe, 0);
             },
             error: (err) => console.error('Error al cargar productos más vendidos:', err)

@@ -63,15 +63,42 @@ import * as FileSaver from 'file-saver';
 
         <p-dialog *ngIf="cerveza" header="Datos de la cerveza" [(visible)]="cervezaDialog" [modal]="true" [style]="{ width: '450px' }">
             <div class="flex flex-col gap-4">
-                <div><label>Nombre</label><input pInputText [(ngModel)]="cerveza.nombre" required /></div>
-                <div><label>Estilo</label><input pInputText [(ngModel)]="cerveza.estilo" /></div>
-                <div><label>Graduación</label><p-inputnumber [(ngModel)]="cerveza.graduacion" suffix="°" mode="decimal" /></div>
-                <div><label>País de origen</label><input pInputText [(ngModel)]="cerveza.paisOrigen" /></div>
-                <div><label>Precio</label><p-inputnumber [(ngModel)]="cerveza.precio" mode="currency" currency="EUR" /></div>
-                <div><label>Stock</label><p-inputnumber [(ngModel)]="cerveza.stock" /></div>
-                <div><label>Descripción</label><textarea pInputText [(ngModel)]="cerveza.descripcion"></textarea></div>
-                <div><label>URL de imagen</label><input pInputText [(ngModel)]="cerveza.imagenUrl" /></div>
-                <div><label>Código de barras</label><input pInputText [(ngModel)]="cerveza.codigoBarras" /></div>
+                <div class="flex flex-col">
+                    <label class="mb-1">Nombre</label>
+                    <input pInputText [(ngModel)]="cerveza.nombre" required />
+                </div>
+                <div class="flex flex-col">
+                    <label class="mb-1">Estilo</label>
+                    <input pInputText [(ngModel)]="cerveza.estilo" />
+                </div>
+                <div class="flex flex-col">
+                    <label class="mb-1">Graduación</label>
+                    <p-inputnumber [(ngModel)]="cerveza.graduacion" suffix="°" mode="decimal" />
+                </div>
+                <div class="flex flex-col">
+                    <label class="mb-1">País de origen</label>
+                    <input pInputText [(ngModel)]="cerveza.paisOrigen" />
+                </div>
+                <div class="flex flex-col">
+                    <label class="mb-1">Precio</label>
+                    <p-inputnumber [(ngModel)]="cerveza.precio" mode="currency" currency="EUR" />
+                </div>
+                <div class="flex flex-col">
+                    <label class="mb-1">Stock</label>
+                    <p-inputnumber [(ngModel)]="cerveza.stock" />
+                </div>
+                <div class="flex flex-col">
+                    <label class="mb-1">Descripción</label>
+                    <textarea pInputText [(ngModel)]="cerveza.descripcion"></textarea>
+                </div>
+                <div class="flex flex-col">
+                    <label class="mb-1">URL de imagen</label>
+                    <input pInputText [(ngModel)]="cerveza.imagenUrl" />
+                </div>
+                <div class="flex flex-col">
+                    <label class="mb-1">Código de barras</label>
+                    <input pInputText [(ngModel)]="cerveza.codigoBarras" />
+                </div>
             </div>
 
             <ng-template pTemplate="footer">

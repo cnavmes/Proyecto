@@ -41,7 +41,10 @@ export class RecentSalesWidget implements OnInit {
 
     ngOnInit(): void {
         this.dashboard.getOrders().subscribe({
-            next: (data: Venta[]) => (this.ventas = data),
+            next: (data: Venta[]) => {
+                // Ordenar por fecha descendente
+                this.ventas = data.sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime());
+            },
             error: (err: any) => console.error('Error loading sales:', err)
         });
     }

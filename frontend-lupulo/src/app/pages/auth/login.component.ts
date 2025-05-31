@@ -37,14 +37,6 @@ import { AuthService } from '../../services/auth.service';
                             <label for="password1" class="block text-surface-50 font-medium text-xl mb-2">Contraseña</label>
                             <p-password id="password1" [(ngModel)]="password" placeholder="Contraseña" [toggleMask]="true" styleClass="mb-4 w-full bg-surface-800 text-surface-50" [fluid]="true" [feedback]="false"></p-password>
 
-                            <div class="flex items-center justify-between mt-2 mb-8 gap-8">
-                                <div class="flex items-center">
-                                    <p-checkbox [(ngModel)]="checked" id="rememberme1" binary class="mr-2"></p-checkbox>
-                                    <label for="rememberme1" class="text-surface-50">Recuérdame</label>
-                                </div>
-                                <span class="text-surface-200 font-medium cursor-pointer">¿Olvidaste tu contraseña?</span>
-                            </div>
-
                             <p-button label="Iniciar sesión" styleClass="w-full" (click)="onSubmit()" [loading]="loading" [disabled]="loading"></p-button>
 
                             <p-messages [value]="messages" class="mt-4"></p-messages>

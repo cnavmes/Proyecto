@@ -1,5 +1,6 @@
 package com.lupulo.cerveceria.service;
 
+import com.lupulo.cerveceria.dto.VentaMultipleRequest;
 import com.lupulo.cerveceria.dto.VentaRequest;
 import com.lupulo.cerveceria.model.Cerveza;
 import com.lupulo.cerveceria.model.Venta;
@@ -94,5 +95,30 @@ public class VentaService {
           return map;
         })
         .toList();
+  }
+
+  public void registrarVentasMultiples(VentaMultipleRequest request) {
+    String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+    for (VentaRequest ventaReq : request.getVentas()) {
+      Cerveza cerveza = cervezaRepository.findById(ventaReq.getCervezaId())
+          .orElseThrow(() -> new RuntimeException("Cerveza no encontrada con ID: " + ventaReq.getCervezaId()));
+
+      if (cerveza.getStock() < ventaReq.getCantidad()) {
+        throw new RuntimeException("Stock insuficiente para " + cerveza.getNombre());
+      }
+
+      cerveza.setStock(cerveza.getStock() - ventaReq.getCantidad());
+      cervezaRepository.save(cerveza);
+
+      Venta venta = Venta.builder()
+          .cerveza(cerveza)
+          .cantidad(ventaReq.getCantidad())
+          .fecha(LocalDateTime.now())
+          .usuarioEmail(email)
+          .build();
+
+      ventaRepository.save(venta);
+    }
   }
 }

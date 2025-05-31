@@ -1,5 +1,6 @@
 package com.lupulo.cerveceria.controller;
 
+import com.lupulo.cerveceria.dto.VentaMultipleRequest;
 import com.lupulo.cerveceria.dto.VentaRequest;
 import com.lupulo.cerveceria.model.Venta;
 import com.lupulo.cerveceria.service.CsvExportService;
@@ -57,5 +58,12 @@ public class VentaController {
     LocalDateTime hastaFecha = LocalDate.parse(hasta, formatter).atTime(23, 59, 59);
 
     return ventaService.buscarPorRangoDeFechas(desdeFecha, hastaFecha);
+  }
+
+  @PreAuthorize("hasRole('ADMIN')")
+  @PostMapping("/multiples")
+  public ResponseEntity<String> registrarVentasMultiples(@RequestBody VentaMultipleRequest request) {
+    ventaService.registrarVentasMultiples(request);
+    return ResponseEntity.ok("Ventas registradas correctamente");
   }
 }

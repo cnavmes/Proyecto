@@ -1,0 +1,137 @@
+<p-toast></p-toast>
+
+<div class="grid gap-4 md:grid-cols-3">
+  <!-- Columna izquierda -->
+  <div class="md:col-span-2 card p-4 bg-surface-800 text-surface-0">
+    <h2 class="text-2xl font-semibold mb-4">Realizar Venta</h2>
+
+    <!-- Buscador -->
+    <div class="mb-4 relative">
+      <input type="text" [(ngModel)]="busqueda" (ngModelChange)="buscarCerveza()" placeholder="Nombre o código de barras"
+        pInputText class="w-full px-4 py-2 border border-surface-500 rounded-md bg-surface-800 text-white" />
+
+      <!-- Lista de sugerencias -->
+      <ul *ngIf="cervezasSugeridas.length > 0"
+        class="bg-surface-700 text-surface-0 shadow-lg rounded mt-1 p-2 z-10 absolute w-full max-h-60 overflow-y-auto border border-surface-600">
+        <li *ngFor="let c of cervezasSugeridas" (click)="seleccionarCerveza(c)"
+          class="cursor-pointer p-2 hover:bg-surface-600 transition-colors duration-150">
+          {{ c.nombre }} — {{ c.estilo }} (Stock: {{ c.stock }})
+        </li>
+      </ul>
+    </div>
+
+    <!-- Selección -->
+    <div *ngIf="cervezaEncontrada" class="mb-4 border-b border-surface-600 pb-4">
+      <div class="mb-2">
+        <strong>{{ cervezaEncontrada.nombre }}</strong> ({{ cervezaEncontrada.estilo }}) — Stock:
+        {{ cervezaEncontrada.stock }} — <span class="text-sm">{{ cervezaEncontrada.precio | currency:'EUR' }}</span>
+      </div>
+      <div class="flex gap-2 items-center">
+        <input type="number" [(ngModel)]="cantidad" placeholder="Cantidad" pInputText
+          class="w-32 px-3 py-2 border border-surface-500 rounded-md bg-surface-800 text-white" />
+        <button pButton label="Añadir al carrito" (click)="agregarAlCarrito()"></button>
+      </div>
+    </div>
+
+    <!-- Tabla del carrito -->
+    <div class="mb-6">
+      <p-table [value]="carrito" *ngIf="carrito.length > 0">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Cerveza</th>
+            <th>Cantidad</th>
+            <th>Precio unidad</th>
+            <th>Subtotal</th>
+            <th>Acción</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item let-i="rowIndex">
+          <tr>
+            <td>{{ item.nombre }}</td>
+            <td>{{ item.cantidad }}</td>
+            <td>{{ item.precio | currency:'EUR' }}</td>
+            <td>{{ item.precio * item.cantidad | currency:'EUR' }}</td>
+            <td>
+              <button pButton icon="pi pi-trash" class="p-button-danger" (click)="quitarDelCarrito(i)"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <!-- Botón de registrar -->
+    <div class="flex justify-center">
+      <button pButton label="Realizar Venta" class="p-button-success px-5 py-2 text-lg"
+        (click)="registrarVentas()" [disabled]="carrito.length === 0"></button>
+    </div>
+  </div>
+
+  <!-- Columna derecha: Ticket -->
+  <div *ngIf="mostrarTicket" class="card bg-surface-800 text-surface-0 p-4">
+    <div id="ticket">
+      <div class="text-center mb-2">
+        <img src="assets/logo.png" class="mx-auto mb-2" style="width: 60px;" />
+        <h3 class="text-lg font-bold">Un mar de Lúpulo</h3>
+        <p class="text-sm">Calle Ficticia 123, Ciudad Cervecera</p>
+        <p class="text-sm">NIF: 12345678Z</p>
+        <hr class="my-2 border-surface-600" />
+        <p class="text-sm">Fecha: {{ fechaVenta | date:'short' }}</p>
+      </div>
+
+      <div class="text-sm">
+        <table class="w-full mb-2">
+          <thead>
+            <tr>
+              <th align="left">Producto</th>
+              <th align="right">Cant.</th>
+              <th align="right">€</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of carrito">
+              <td>{{ item.nombre }}</td>
+              <td align="right">{{ item.cantidad }}</td>
+              <td align="right">{{ item.precio * item.cantidad | currency:'EUR' }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <hr class="my-2 border-surface-600" />
+
+        <p class="text-right font-semibold text-base">
+          TOTAL: {{ calcularTotal() | currency:'EUR' }}
+        </p>
+      </div>
+
+      <p class="text-xs text-center mt-4">Gracias por su compra :)</p>
+    </div>
+
+    <button pButton label="Imprimir Ticket" icon="pi pi-print" class="mt-4 w-full" (click)="imprimirTicket()"></button>
+  </div>
+</div>
+
+<!-- Fila nueva para historial de ventas -->
+<div class="mt-4 card bg-surface-800 text-surface-0 p-4">
+  <h3 class="text-xl font-semibold mb-4">Ventas recientes</h3>
+  <p-table [value]="ventasRecientes" *ngIf="ventasRecientes.length > 0" [scrollable]="true" scrollHeight="200px">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Producto</th>
+        <th>Cantidad</th>
+        <th>Fecha</th>
+        <th>Vendedor</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-venta>
+      <tr>
+        <td>{{ venta.cerveza.nombre }}</td>
+        <td>{{ venta.cantidad }}</td>
+        <td>{{ venta.fecha | date:'short' }}</td>
+        <td>{{ venta.usuarioEmail }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <p *ngIf="ventasRecientes.length === 0" class="text-sm text-center text-surface-400">
+    No hay ventas recientes registradas.
+  </p>
+</div>

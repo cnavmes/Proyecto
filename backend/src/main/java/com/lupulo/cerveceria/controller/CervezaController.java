@@ -95,4 +95,10 @@ public class CervezaController {
             HttpStatus.NOT_FOUND,
             "No se encontró ninguna cerveza con el código de barras: " + codigoBarras));
   }
+
+  @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+  @GetMapping("/buscar")
+  public List<Cerveza> buscarPorNombreOCodigo(@RequestParam String query) {
+    return service.buscarPorNombreOCodigo(query);
+  }
 }

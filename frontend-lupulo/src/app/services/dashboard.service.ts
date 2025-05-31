@@ -2,6 +2,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+
+export interface VentaMultipleRequest {
+    ventas: VentaRequest[];
+}
 export interface RevenueDTO {
     nombreCerveza: string;
     importe: number;
@@ -158,5 +162,17 @@ export class DashboardService {
     }
     getVentasPorEstilo(): Observable<EstiloVentasDTO[]> {
         return this.http.get<EstiloVentasDTO[]>(`${this.apiDashboard}/ventas-por-estilo`);
+    }
+    // ---------- Ventas múltiples ----------
+    // ---------- Ventas múltiples ----------
+    registrarVentasMultiples(req: VentaMultipleRequest): Observable<string> {
+        return this.http.post(`${this.apiVentas}/multiples`, req, {
+            responseType: 'text'
+        });
+    }
+    buscarCervezas(query: string): Observable<Cerveza[]> {
+        return this.http.get<Cerveza[]>(`${this.apiCervezas}/buscar`, {
+            params: new HttpParams().set('query', query)
+        });
     }
 }

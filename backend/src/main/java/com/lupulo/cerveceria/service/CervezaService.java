@@ -11,6 +11,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.*;
+import com.lupulo.cerveceria.repository.CervezaRepository;
 
 @Service
 public class CervezaService {
@@ -115,5 +116,9 @@ public class CervezaService {
 
   public List<Cerveza> getLowStockList(int threshold) {
     return repository.findByStockLessThan(threshold);
+  }
+
+  public List<Cerveza> buscarPorNombreOCodigo(String query) {
+    return repository.findByNombreContainingIgnoreCaseOrCodigoBarrasContaining(query, query);
   }
 }

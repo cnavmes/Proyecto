@@ -30,6 +30,10 @@ export const routes: Routes = [
                 path: 'entrada-stock',
                 loadComponent: () => import('./app/pages/entrada-stock/entrada-stock.component').then((m) => m.EntradaStockComponent),
                 canActivate: [adminGuard]
+            },
+            {
+                path: 'ventas-multiples',
+                loadComponent: () => import('./app/pages/ventas/ventas-multiples.component').then((m) => m.VentasMultiplesComponent)
             }
         ]
     },

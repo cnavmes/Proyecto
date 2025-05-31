@@ -32,6 +32,11 @@ export class AppMenu {
                         label: 'Entrada de stock',
                         icon: 'pi pi-fw pi-plus-circle',
                         routerLink: ['/admin/entrada-stock']
+                    },
+                    {
+                        label: 'Ventas',
+                        icon: 'pi pi-fw pi-shopping-cart',
+                        routerLink: ['/admin/ventas-multiples']
                     }
                 ]
             }

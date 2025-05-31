@@ -25,4 +25,6 @@ public interface CervezaRepository extends JpaRepository<Cerveza, Long> {
   long countByStockLessThan(int threshold);
 
   List<Cerveza> findByStockLessThan(int threshold);
+
+  List<Cerveza> findByNombreContainingIgnoreCaseOrCodigoBarrasContaining(String nombre, String codigo);
 }

@@ -57,9 +57,7 @@ export class LoginComponent {
     constructor(
         private authService: AuthService,
         private router: Router
-    ) {
-        // no hay toggle, está siempre en oscuro
-    }
+    ) {}
 
     onSubmit(): void {
         this.loading = true;
@@ -68,7 +66,7 @@ export class LoginComponent {
         this.authService.login(this.email, this.password).subscribe({
             next: () => {
                 const rol = this.authService.obtenerRol();
-                this.router.navigate([rol === 'ADMIN' ? '/admin/dashboard' : '/usuario-panel']);
+                this.router.navigate(['/admin/dashboard']);
             },
             error: () => {
                 this.messages = [{ severity: 'error', summary: 'Error', detail: 'Email o contraseña incorrectos.' }];

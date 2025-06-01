@@ -29,8 +29,7 @@ export const routes: Routes = [
             },
             {
                 path: 'entrada-stock',
-                loadComponent: () => import('./app/pages/entrada-stock/entrada-stock.component').then((m) => m.EntradaStockComponent),
-                canActivate: [adminGuard]
+                loadComponent: () => import('./app/pages/entrada-stock/entrada-stock.component').then((m) => m.EntradaStockComponent)
             },
             {
                 path: 'ventas-multiples',
@@ -38,8 +37,11 @@ export const routes: Routes = [
             },
             {
                 path: 'usuarios',
-                component: GestionUsuariosComponent,
-                canActivate: [adminGuard]
+                component: GestionUsuariosComponent
+            },
+            {
+                path: 'estadisticas',
+                loadComponent: () => import('./app/pages/estadisticas/estadisticas.component').then((m) => m.EstadisticasComponent)
             }
         ]
     },

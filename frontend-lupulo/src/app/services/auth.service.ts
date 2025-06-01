@@ -27,7 +27,7 @@ export class AuthService {
         try {
             const payload = JSON.parse(atob(token.split('.')[1]));
             const rol = payload.rol ?? '';
-            localStorage.setItem('rol', rol); // 🔐 Guardamos el rol directamente
+            localStorage.setItem('rol', rol);
         } catch (e) {
             console.error('Error al extraer el rol del token:', e);
         }
@@ -39,20 +39,17 @@ export class AuthService {
 
     eliminarToken(): void {
         localStorage.removeItem('token');
+        localStorage.removeItem('rol');
     }
 
     estaAutenticado(): boolean {
         return !!this.obtenerToken();
     }
-    /**
-     * Decodifica el JWT que tienes en localStorage y devuelve el claim 'rol'
-     */
+
     obtenerRol(): string | null {
-        return localStorage.getItem('rol'); // 💡 ya lo guardamos al iniciar sesión
+        return localStorage.getItem('rol');
     }
-    /**
-     * Decodifica el JWT y devuelve el email del usuario (claim 'sub' o 'email')
-     */
+
     obtenerEmail(): string | null {
         const token = this.obtenerToken();
         if (!token) {
@@ -60,11 +57,20 @@ export class AuthService {
         }
         try {
             const payload = JSON.parse(atob(token.split('.')[1]));
-
             return payload.sub || payload.email || null;
         } catch (e) {
             console.error('Error decodificando token JWT:', e);
             return null;
         }
+    }
+
+    // ✅ NUEVO MÉTODO: comprobar si el usuario es ADMIN
+    esAdmin(): boolean {
+        return this.obtenerRol() === 'ADMIN';
+    }
+
+    // ✅ NUEVO MÉTODO: comprobar si el usuario es USER
+    esUsuario(): boolean {
+        return this.obtenerRol() === 'USER';
     }
 }

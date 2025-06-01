@@ -55,12 +55,12 @@ public class VentaController {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     LocalDateTime desdeFecha = LocalDate.parse(desde, formatter).atStartOfDay();
-    LocalDateTime hastaFecha = LocalDate.parse(hasta, formatter).atTime(23, 59, 59);
+    LocalDateTime hastaFecha = LocalDate.parse(hasta, formatter).atTime(23, 59, 59, 999_999_999);
 
     return ventaService.buscarPorRangoDeFechas(desdeFecha, hastaFecha);
   }
 
-  @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
   @PostMapping("/multiples")
   public ResponseEntity<String> registrarVentasMultiples(@RequestBody VentaMultipleRequest request) {
     ventaService.registrarVentasMultiples(request);

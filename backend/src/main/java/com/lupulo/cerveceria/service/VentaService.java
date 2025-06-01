@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+// ... imports sin cambios
+
 @Service
 public class VentaService {
 
@@ -55,16 +57,33 @@ public class VentaService {
   }
 
   public List<Venta> buscarPorRangoDeFechas(LocalDateTime desde, LocalDateTime hasta) {
-    return ventaRepository.findByFechaBetween(desde, hasta);
+    System.out.println("🔍 Filtro de fechas:");
+    System.out.println("Desde: " + desde);
+    System.out.println("Hasta: " + hasta);
+
+    return ventaRepository.findAll().stream()
+        .filter(v -> {
+          if (v.getFecha() == null)
+            return false;
+
+          LocalDateTime fechaVenta = v.getFecha();
+          boolean dentroDeRango = !fechaVenta.isBefore(desde) && !fechaVenta.isAfter(hasta);
+
+          if (dentroDeRango) {
+            System.out.println("✅ Incluyendo venta: " + fechaVenta + " - " + v.getCerveza().getNombre());
+          } else {
+            System.out.println("❌ Excluyendo venta: " + fechaVenta);
+          }
+
+          return dentroDeRango;
+        })
+        .toList();
   }
 
   public long countVentas() {
     return ventaRepository.count();
   }
 
-  /**
-   * Suma el total de ingresos: precio de la cerveza × cantidad vendida.
-   */
   public double sumRevenue() {
     return ventaRepository.findAll().stream()
         .mapToDouble(v -> v.getCerveza().getPrecio() * v.getCantidad())

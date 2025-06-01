@@ -47,7 +47,7 @@ public class MovimientoStockController {
     return service.filtrarMovimientos(tipo, desdeFecha, hastaFecha, usuarioEmail, cervezaNombre, page, size);
   }
 
-  @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
   @PostMapping("/reponer/{cervezaId}")
   public ResponseEntity<Map<String, String>> reponer(@PathVariable Long cervezaId,
       @RequestBody ReponerStockRequest request) {
